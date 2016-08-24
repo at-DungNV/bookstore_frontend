@@ -1,0 +1,21 @@
+
+<div class="jumbotron" ng-controller="LoginController">
+  <form role="form" action="" method="POST">
+  <!-- <form role="form" method="POST"> -->
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" class="form-control" id="email" ng-model="email" name="email" placeholder="Enter username">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" id="pwd" ng-model="password" name="password" placeholder="Enter password">
+    </div>
+    <div class="checkbox">
+      <label><input type="checkbox"> Remember me</label>
+    </div>
+    <input type="submit" class="btn btn-success btn-sm"></button>
+    <button type="button" class="btn btn-success btn-sm"  ng-click="">Sign in</button>
+  </form>
+  <a href="http://bookstore.me//auth/facebook/redirect"> facebook login</a>
+</div>
+<h1> token {{token}}</h1>
