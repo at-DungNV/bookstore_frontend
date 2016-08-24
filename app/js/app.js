@@ -7,12 +7,7 @@ var bookApp = angular.module('bookApp', [
   'bookServices'
 ]);
 
-bookApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-  // $locationProvider.html5Mode(true);   
-  // $locationProvider.html5Mode({
-  //   enabled: true,
-  //   requireBase: false
-  // });
+bookApp.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
     .when('/home', {
       templateUrl: 'view/home.html',
