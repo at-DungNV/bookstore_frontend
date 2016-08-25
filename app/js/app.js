@@ -25,7 +25,8 @@ bookApp.config(['$routeProvider', function ($routeProvider) {
       templateUrl: 'view/index.html',
       controller: 'IndexController'
     })
-    .otherwise({
-      redirectTo: '/index'
-    });
+    // .otherwise({
+    //   redirectTo: '/index'
+    // })
+    ;
 }]);
