@@ -10,6 +10,12 @@ bookControllers.controller('HomeController', ['$scope', '$route',
     $scope.template = $route.current.templateUrl;
 }]);
 
+bookControllers.controller('IndexController', ['$scope', '$route',
+  function ($scope, $route) {
+    // Controller method for Home
+    $scope.template = $route.current.templateUrl;
+}]);
+
 bookControllers.controller('AboutController', ['$scope', '$route', 'myHttp', 
   function ($scope, $route, myHttp) {
     // Controller method for About
@@ -21,14 +27,18 @@ bookControllers.controller('AboutController', ['$scope', '$route', 'myHttp',
     // }, function() {
     //   $scope.error = 'unable to get the ponies';
     // });
-    myHttp.getAllPeople('../data/people.json').then(function(data) {
-      $scope.data = data;
-    });
+    // myHttp.getAllPeople('../data/people.json').then(function(data) {
+    //   $scope.data = data;
+    // });
     
 }]);
 
 bookControllers.controller('LoginController', ['$scope', '$route',
   function ($scope, $route) {
+    $scope.isShowedLogin = true;
     // Controller method for Home
     $scope.template = $route.current.templateUrl;
+    $scope.setShowedLogin = function (value) {
+      $scope.isShowedLogin = value;
+    };
 }]);
