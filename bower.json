@@ -20,6 +20,10 @@
     "angular-loader": "^1.5.0",
     "angular-mocks": "^1.5.0",
     "bootstrap": "^3.3.6",
-    "font-awesome": "^4.6.3"
+    "font-awesome": "^4.6.3",
+    "satellizer": "^0.15.4",
+    "angular-ui-router": "^0.3.1",
+    "ngstorage": "^0.3.11",
+    "angular-resource": "^1.5.8"
   }
 }
