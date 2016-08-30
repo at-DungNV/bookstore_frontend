@@ -8,16 +8,19 @@
                     <a href="#/home">Home</a>
                   </li>
                   <li>
-                    <a href="#/login">Login</a>
+                    <a href="#/login" ng-show="!isLoggedIn">Login/ Register</a>
                   </li>
-                  <li>
-                    <a href="#/index">Index</a>
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" ng-show="isLoggedIn" id="download">dungnv <span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="download">
+                      <li><a href="">Cac tin da dang</a></li>
+                      <li><a href="">Thong tin ca nhan</a></li>
+                      <li><a href="">Lich su giao dich</a></li>
+                      <li><a href="#/logout">Dang xuat</a></li>
+                    </ul>
                   </li>
                   <li>
                     <a href="#/about">Dang tin mien phi</a>
-                  </li>
-                  <li>
-                    <a href="#/logout">Dang xuat</a>
                   </li>
                 </ul>
             </nav>

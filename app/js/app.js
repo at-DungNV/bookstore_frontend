@@ -25,9 +25,7 @@ bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpP
       })
       .state('about', {
           resolve: {
-            "check" : function (checkLogin) {
-              checkLogin.isLoggedIn();
-            }
+            "check" : isLoggedIn
           },
           url: '/about',
           templateUrl: 'view/about.html',
@@ -45,5 +43,15 @@ bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpP
       })
       ;
     $urlRouterProvider.otherwise('/login');
+    var isLoggedIn = function ($location, $q, $rootScope) {
+        var deferred = $q.defer();
+        if ($rootScope.isLoggedIn) {
+            deferred.resolve();
+        } else {
+            deferred.reject();
+            $location.url('/login');
+        }
+        return deferred.promise;
+    };
   }
 ]);

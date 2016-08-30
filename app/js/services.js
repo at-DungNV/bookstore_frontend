@@ -2,21 +2,24 @@
 
 var shareServices = angular.module('shareServices', []);
 
-shareServices.service('myHttp', ['$http', '$q', '$localStorage', function ($http, $q, $localStorage) {
-  this.index = function (url) {
-    var deferred = $q.defer();
-    return $http.get(url)
-      .success(function (data) {
-        deferred.resolve(data); // declare that has been solved
-      })
-      .error(function (data) {
-        deferred.reject(data);
+shareServices.factory('ArticleService', ['$resource', '$localStorage', function ($resource, $localStorage) {
+    return $resource('http://bookstore.me/api/article/:article', 
+      {
+        article: "@article"
+      },
+      {
+        query: {
+          method: "GET",
+          isArray: true,
+          headers: {
+            "Authorization": $localStorage.currentUser.token
+          }
+        }
       }
     );
-  }
 }]);
 
-shareServices.service('AuthenticationService', ['$http', '$q', '$localStorage', '$location', function ($http, $q, $localStorage, $location) {
+shareServices.service('AuthenticationService', ['$http', '$q', '$localStorage', '$location', '$rootScope', function ($http, $q, $localStorage, $location, $rootScope) {
   this.login = function (email, password, url) {
     var deferred = $q.defer();
     return $http.post(url, { email: email, password: password })
@@ -37,32 +40,8 @@ shareServices.service('AuthenticationService', ['$http', '$q', '$localStorage', 
   this.logout = function () {
     delete $localStorage.currentUser;
     $http.defaults.headers.common.Authorization = '';
+    $localStorage.isLoggedIn = false;
+    $rootScope.isLoggedIn = $localStorage.isLoggedIn;
     $location.path('/login');
   }
 }]);
-
-shareServices.service('checkLogin', ['$localStorage', '$location', function ($localStorage, $location) {
-  this.isLoggedIn = function () {
-    if(!$localStorage.currentUser) {
-      $location.path('/index');
-    }
-  }
-}]);
-
-shareServices.factory('ArticleService', ['$resource', '$localStorage', function ($resource, $localStorage) {
-    return $resource('http://bookstore.me/api/articles/:article', 
-      {
-        article: "@article"
-      },
-      {
-        query: {
-          method: "GET",
-          isArray: true,
-          headers: {
-            "Authorization": $localStorage.currentUser.token
-          }
-        }
-      }
-    );
-}])
-;
