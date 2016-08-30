@@ -6,7 +6,8 @@ var bookApp = angular.module('bookApp', [
   'shareServices',
   'satellizer',
   'ui.router',
-  'ngStorage'
+  'ngStorage',
+  'ngResource'
 ]);
 
 bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpProvider', 

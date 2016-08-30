@@ -4,17 +4,14 @@ var bookControllers = angular.module('bookControllers', [
   'ngRoute'
 ]);
 
-bookControllers.controller('HomeController', ['$scope', '$route', 'myHttp', 
-  function ($scope, $route, myHttp) {
-    myHttp.index('http://bookstore.me/api/articles').then(
-      function(successParam) { // success callback
-        $scope.articles = successParam.data;
-        
-        console.log(successParam.data);
-      }, function(rejectParam) { // error callback with reason
-        console.log("rejected");
-      }, function(notifyParam) { // notification
-        console.log("notify");
+bookControllers.controller('HomeController', ['$scope', '$route', 'ArticleService', 
+  function ($scope, $route, ArticleService) {
+    ArticleService.query().$promise
+      .then(function (data) {
+        $scope.articles = data;
+      })
+      .catch(function (fallback) {
+        $scope.articles = fallback.toUpperCase() + '!!';
       }
     );
   }

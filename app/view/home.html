@@ -15,29 +15,35 @@
         </div>
 
         <div class="col-md-9">
-            <div class="row">
-							<div ng-repeat="x in articles">
-								<div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/320x150" alt="">
-                        <div class="caption">
-                            <h4 class="pull-right">$24.99</h4>
-                            <h4><a href="#">First Product</a>
-                            </h4>
-                            <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-                        </div>
-                        <div class="ratings">
-                            <p class="pull-right">15 reviews</p>
-                            <p>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="row thumbnail">
+							<div ng-repeat="article in articles">
+								<div class="row">
+									<div class="col-sm-2 col-lg-2 col-md-2">
+										<div class="thumbnail">
+											<img src="http://placehold.it/120x120" alt="">
+										</div>
+									</div>
+									<div class="col-sm-10 col-lg-10 col-md-10">
+										<div class="caption">
+											<!-- <h4 class="pull-right">$24.99</h4> -->
+											<h5>
+												<a ng-click="show(article.id)">{{ article.id }} click here</a>
+											</h5>
+											<h5> ${{ article.price }} </h5>
+										</div>
+										<div class="ratings">
+											<p class="pull-right">15 reviews</p>
+											<p>
+												<span class="glyphicon glyphicon-star"></span>
+												<span class="glyphicon glyphicon-star"></span>
+												<span class="glyphicon glyphicon-star"></span>
+												<span class="glyphicon glyphicon-star"></span>
+												<span class="glyphicon glyphicon-star"></span>
+											</p>
+										</div>
+									</div>
+								</div>
+								<hr>
 							</div>
             </div>
 

@@ -26,7 +26,6 @@ shareServices.service('AuthenticationService', ['$http', '$q', '$localStorage', 
             $localStorage.currentUser = { email: email, token: response.token };
             // add jwt token to auth header for all requests made by the $http service
             $http.defaults.headers.common.Authorization = 'Bearer ' + response.token;
-            console.log($http);
         }
         deferred.resolve(response);
       })
@@ -49,3 +48,21 @@ shareServices.service('checkLogin', ['$localStorage', '$location', function ($lo
     }
   }
 }]);
+
+shareServices.factory('ArticleService', ['$resource', '$localStorage', function ($resource, $localStorage) {
+    return $resource('http://bookstore.me/api/articles/:article', 
+      {
+        article: "@article"
+      },
+      {
+        query: {
+          method: "GET",
+          isArray: true,
+          headers: {
+            "Authorization": $localStorage.currentUser.token
+          }
+        }
+      }
+    );
+}])
+;
