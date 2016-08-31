@@ -1,4 +1,4 @@
-<header id="fh5co-header" role="banner">
+<header class="fh5co-header" role="banner">
     <div class="container">
         <div class="header-inner">
             <h1><i class="sl-icon-energy"></i><a href="index.html">Web rao vat</a></h1>
@@ -7,11 +7,8 @@
                   <li>
                     <a href="#/home">Home</a>
                   </li>
-                  <li>
-                    <a href="#/login" ng-show="!isLoggedIn">Login/ Register</a>
-                  </li>
                   <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" ng-show="isLoggedIn" id="download">dungnv <span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" id="download"> {{ email }} <span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="download">
                       <li><a href="">Cac tin da dang</a></li>
                       <li><a href="">Thong tin ca nhan</a></li>
@@ -20,7 +17,7 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="#/about">Dang tin mien phi</a>
+                    <a href="#/about">Dang tin mien phi about</a>
                   </li>
                 </ul>
             </nav>

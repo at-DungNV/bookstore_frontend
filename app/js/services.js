@@ -2,33 +2,22 @@
 
 var shareServices = angular.module('shareServices', []);
 
-shareServices.factory('ArticleService', ['$resource', '$localStorage', function ($resource, $localStorage) {
-    return $resource('http://bookstore.me/api/article/:article', 
+shareServices.factory('ArticleService', ['$resource', '$localStorage', 'urlArticle', function ($resource, $localStorage, urlArticle) {
+    return $resource(urlArticle, 
       {
         article: "@article"
-      },
-      {
-        query: {
-          method: "GET",
-          isArray: true,
-          headers: {
-            "Authorization": $localStorage.currentUser.token
-          }
-        }
       }
     );
 }]);
 
 shareServices.service('AuthenticationService', ['$http', '$q', '$localStorage', '$location', '$rootScope', function ($http, $q, $localStorage, $location, $rootScope) {
-  this.login = function (email, password, url) {
+  this.login = function (email, password, urlAuthentication) {
     var deferred = $q.defer();
-    return $http.post(url, { email: email, password: password })
+    return $http.post(urlAuthentication, { email: email, password: password })
       .success(function (response) {
         if (response.token) {
             // store username and token in local storage to keep user logged in between page refreshes
             $localStorage.currentUser = { email: email, token: response.token };
-            // add jwt token to auth header for all requests made by the $http service
-            $http.defaults.headers.common.Authorization = 'Bearer ' + response.token;
         }
         deferred.resolve(response);
       })
@@ -37,11 +26,31 @@ shareServices.service('AuthenticationService', ['$http', '$q', '$localStorage', 
       }
     );
   }
+}]);
+
+shareServices.service('UserService', ['$localStorage', '$location', function ($localStorage, $location) {
   this.logout = function () {
     delete $localStorage.currentUser;
-    $http.defaults.headers.common.Authorization = '';
-    $localStorage.isLoggedIn = false;
-    $rootScope.isLoggedIn = $localStorage.isLoggedIn;
     $location.path('/login');
+  }
+  this.isLoggedIn = function () {
+    if($localStorage.currentUser) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  this.getEmail = function () {
+    return $localStorage.currentUser ? $localStorage.currentUser.email : 'default';
+  }
+}]);
+
+shareServices.service('LanguageService', ['$resource', 'urlENCommon', function ($resource, urlENCommon) {
+  this.getLanguageCommon = function () {
+    return $resource(urlENCommon, 
+      {
+        id: "@id"
+      }
+    );
   }
 }]);
