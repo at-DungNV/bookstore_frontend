@@ -2,7 +2,7 @@
 
 var shareServices = angular.module('shareServices', []);
 
-shareServices.factory('ArticleService', ['$resource', '$localStorage', 'urlArticle', function ($resource, $localStorage, urlArticle) {
+shareServices.factory('ArticleService', ['$resource', 'urlArticle', function ($resource, urlArticle) {
     return $resource(urlArticle, 
       {
         article: "@article"
@@ -10,14 +10,15 @@ shareServices.factory('ArticleService', ['$resource', '$localStorage', 'urlArtic
     );
 }]);
 
-shareServices.service('AuthenticationService', ['$http', '$q', '$localStorage', '$location', '$rootScope', function ($http, $q, $localStorage, $location, $rootScope) {
+shareServices.service('AuthenticationService', ['$http', '$q', 'UserService', function ($http, $q, UserService) {
   this.login = function (email, password, urlAuthentication) {
     var deferred = $q.defer();
     return $http.post(urlAuthentication, { email: email, password: password })
       .success(function (response) {
         if (response.token) {
             // store username and token in local storage to keep user logged in between page refreshes
-            $localStorage.currentUser = { email: email, token: response.token };
+            UserService.setEmail(email);
+            UserService.setToken(response.token);
         }
         deferred.resolve(response);
       })
@@ -28,19 +29,29 @@ shareServices.service('AuthenticationService', ['$http', '$q', '$localStorage', 
   }
 }]);
 
-shareServices.service('UserService', ['$localStorage', '$location', function ($localStorage, $location) {
-  this.logout = function () {
-    delete $localStorage.currentUser;
-    $location.path('/login');
-  }
-  this.isLoggedIn = function () {
-    if($localStorage.currentUser) {
-      return true;
-    } else {
-      return false;
+shareServices.factory("UserService", function($window, $location) {
+  return {
+    setEmail: function(email) {
+      $window.localStorage && $window.localStorage.setItem('email', email);
+      return this;
+    },
+    getEmail: function() {
+      return $window.localStorage && $window.localStorage.getItem('email');
+    },
+    setToken: function(token) {
+      $window.localStorage && $window.localStorage.setItem('token', token);
+      return this;
+    },
+    getToken: function() {
+      return $window.localStorage && $window.localStorage.getItem('token');
+    },
+    logout : function () {
+      delete $window.localStorage.email;
+      delete $window.localStorage.token;
+      $location.path('/login');
+    },
+    isLoggedIn : function () {
+      return $window.localStorage.email ? true : false;
     }
-  }
-  this.getEmail = function () {
-    return $localStorage.currentUser ? $localStorage.currentUser.email : 'default';
-  }
-}]);
+  };
+});

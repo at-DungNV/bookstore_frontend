@@ -45,3 +45,4 @@ var urlBase = 'http://bookstore.me';
 bookApp.constant("urlArticle", urlBase+ '/api/article/:article');
 bookApp.constant("urlAuthentication", urlBase+ '/api/authenticate');
 bookApp.constant("urlENCommon", 'view/lang/en/common.json');
+bookApp.value("x", 'abc');
