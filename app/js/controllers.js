@@ -35,14 +35,16 @@ bookControllers.controller('ViewController', ['$scope', 'UserService', 'commonLa
   }
 ]);
 
-bookControllers.controller('HomeController', ['$scope', '$route', 'ArticleService', 'commonLanguage', 'homeLanguage', 
-  function ($scope, $route, ArticleService, commonLanguage, homeLanguage) {
+bookControllers.controller('HomeController', ['$scope', 'ArticleService', 'commonLanguage', 'homeLanguage', 'UserService', 
+  function ($scope, ArticleService, commonLanguage, homeLanguage, UserService) {
     // set language
     $scope.labelBuy = commonLanguage.labelBuy;
     $scope.labelSell = commonLanguage.labelSell;
     $scope.dollarCurrency = homeLanguage.dollarCurrency;
     
     // process logic
+    $scope.email = UserService.getEmail();
+    $scope.isLoggedIn = UserService.isLoggedIn();
     ArticleService.query().$promise
       .then(function (data) {
         $scope.articles = data;
@@ -54,10 +56,8 @@ bookControllers.controller('HomeController', ['$scope', '$route', 'ArticleServic
   }
 ]);
 
-bookControllers.controller('IndexController', ['$scope', '$route', '$localStorage', 
-  function ($scope, $route, $localStorage) {
-  }
-]);
+bookControllers.controller('IndexController', [function () {
+}]);
 
 bookControllers.controller('LogoutController', ['UserService', 
   function (UserService) {
@@ -65,15 +65,15 @@ bookControllers.controller('LogoutController', ['UserService',
   }
 ]);
 
-bookControllers.controller('AboutController', ['$scope', '$route', 
-  function ($scope, $route) {
-    
+bookControllers.controller('AboutController', ['$scope', 'UserService', 
+  function ($scope, UserService) {
+    $scope.email = UserService.getEmail();
+    $scope.isLoggedIn = UserService.isLoggedIn();
   }
 ]);
 
-bookControllers.controller('LoginController', ['$scope', '$location', '$rootScope', 
-  'AuthenticationService', '$localStorage', 'urlAuthentication', 'commonLanguage', 'loginLanguage', 
-  function ($scope, $location, $rootScope, AuthenticationService, $localStorage, urlAuthentication,
+bookControllers.controller('LoginController', ['$scope', '$location', 'AuthenticationService', 
+  'urlAuthentication', 'commonLanguage', 'loginLanguage', function ($scope, $location, AuthenticationService, urlAuthentication,
     commonLanguage, loginLanguage) {
       // set language
         $scope.labelSignin = loginLanguage.labelSignin;
