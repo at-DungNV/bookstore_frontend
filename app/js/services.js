@@ -44,13 +44,3 @@ shareServices.service('UserService', ['$localStorage', '$location', function ($l
     return $localStorage.currentUser ? $localStorage.currentUser.email : 'default';
   }
 }]);
-
-shareServices.service('LanguageService', ['$resource', 'urlENCommon', function ($resource, urlENCommon) {
-  this.getLanguageCommon = function () {
-    return $resource(urlENCommon, 
-      {
-        id: "@id"
-      }
-    );
-  }
-}]);
