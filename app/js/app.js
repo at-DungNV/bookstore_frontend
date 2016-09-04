@@ -7,7 +7,8 @@ var bookApp = angular.module('bookApp', [
   'ui.router',
   'ngStorage',
   'ngResource',
-  'languageService'
+  'languageService',
+  'yaru22.angular-timeago'
 ]);
 bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpProvider', 
   function ($stateProvider, $urlRouterProvider, $authProvider, $httpProvider) {
@@ -45,4 +46,6 @@ var urlBase = 'http://bookstore.me';
 bookApp.constant("urlArticle", urlBase+ '/api/article/:article');
 bookApp.constant("urlAuthentication", urlBase+ '/api/authenticate');
 bookApp.constant("urlENCommon", 'view/lang/en/common.json');
-bookApp.value("x", 'abc');
+bookApp.constant("defaultSkippedNumber", 0);
+bookApp.constant("skippedNumber", 5);
+bookApp.constant("takenNumber", 5);
