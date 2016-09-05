@@ -3,14 +3,19 @@
 var shareServices = angular.module('shareServices', []);
 
 shareServices.factory('ArticleService', ['$resource', 'urlArticle', function ($resource, urlArticle) {
-    return $resource(urlArticle, 
-      {
+    return $resource(urlArticle, {
         article: "@article"
+      }, {
+        query : {
+          method : 'GET',
+          params : { skippedNumber: '@skippedNumber', takenNumber: '@skippedNumber' },
+          isArray: true
+        }
       }
     );
 }]);
 
-shareServices.service('AuthenticationService', ['$http', '$q', 'UserService', function ($http, $q, UserService) {
+shareServices.service('AuthenticationService', function ($http, $q, UserService) {
   this.login = function (email, password, urlAuthentication) {
     var deferred = $q.defer();
     return $http.post(urlAuthentication, { email: email, password: password })
@@ -27,7 +32,7 @@ shareServices.service('AuthenticationService', ['$http', '$q', 'UserService', fu
       }
     );
   }
-}]);
+});
 
 shareServices.factory("UserService", function($window, $location) {
   return {
@@ -52,6 +57,25 @@ shareServices.factory("UserService", function($window, $location) {
     },
     isLoggedIn : function () {
       return $window.localStorage.email ? true : false;
+    }
+  };
+});
+
+shareServices.factory("LazyLoadingService", function($window) {
+  return {
+    setSkippedNumber: function(skippedNumber) {
+      $window.localStorage && $window.localStorage.setItem('skippedNumber', skippedNumber);
+      return this;
+    },
+    getSkippedNumber: function() {
+      return $window.localStorage && $window.localStorage.getItem('skippedNumber');
+    },
+    setTakenNumber: function(takenNumber) {
+      $window.localStorage && $window.localStorage.setItem('takenNumber', takenNumber);
+      return this;
+    },
+    getTakenNumber: function() {
+      return $window.localStorage && $window.localStorage.getItem('takenNumber');
     }
   };
 });

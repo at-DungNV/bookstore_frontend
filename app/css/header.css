@@ -54,6 +54,9 @@
     display: none;
   }
 }
+
+
+
 .fh5co-header nav ul {
   padding: 0;
   margin: 0 0 0 0;
@@ -65,7 +68,7 @@
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;
-  *display: inline;
+  display: inline;
 }
 .fh5co-header nav ul li a {
   color: rgba(0, 0, 0, 0.5);

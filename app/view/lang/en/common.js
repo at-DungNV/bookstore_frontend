@@ -23,10 +23,13 @@ angular.module("languageService", [], ["$provide", function($provide) {
         contentHumanResource : "Introduce Recruitment Traditional Blog",
         labelAuthor : "DungNV",
         labelCarrer : "Web Design & Development by DungNV",
-        labelLicense : "© 2015, DungNV, All rights reserved"
+        labelLicense : "© 2015, DungNV, All rights reserved",
+        labelError : "Sorry, There might be something wrong!",
+        labelInvalidAccount : "Sorry, Your account is invalid",
     });
     $provide.value("homeLanguage", {
         dollarCurrency : "$",
+        labelLoading : "Loading.............",
     });
     $provide.value("loginLanguage", {
         labelSignin : "Sign in",

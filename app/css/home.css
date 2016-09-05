@@ -1,0 +1,14 @@
+#homeImageBox {
+  white-space: nowrap;
+  text-align: center; margin: 1em 0;
+}
+
+img {
+    background: #3A6F9A;
+    vertical-align: middle;
+}
+
+#homeImageBox img {
+  max-width:100%;
+  max-height:100%;
+}

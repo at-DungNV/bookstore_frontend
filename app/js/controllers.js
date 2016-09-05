@@ -1,10 +1,8 @@
 'use strict';
 
-var bookControllers = angular.module('bookControllers', [
-  'ngRoute'
-]);
+var bookControllers = angular.module('bookControllers', []);
 
-bookControllers.controller('ViewController', ['$scope', 'UserService', 'commonLanguage', 
+bookControllers.controller('ViewController', 
   function ($scope, UserService, commonLanguage) {
     // set language
     $scope.titlePage = commonLanguage.titlePage;
@@ -33,47 +31,72 @@ bookControllers.controller('ViewController', ['$scope', 'UserService', 'commonLa
     $scope.isLoggedIn = UserService.isLoggedIn();
     $scope.email = UserService.getEmail();
   }
-]);
+);
 
-bookControllers.controller('HomeController', ['$scope', 'ArticleService', 'commonLanguage', 'homeLanguage', 'UserService', 
-  function ($scope, ArticleService, commonLanguage, homeLanguage, UserService) {
+bookControllers.controller('HomeController', function (
+  $scope, ArticleService, commonLanguage, homeLanguage, UserService, $window, skippedNumber, takenNumber, LazyLoadingService, $timeout, defaultSkippedNumber
+  ) {
     // set language
     $scope.labelBuy = commonLanguage.labelBuy;
     $scope.labelSell = commonLanguage.labelSell;
     $scope.dollarCurrency = homeLanguage.dollarCurrency;
     
     // process logic
+    LazyLoadingService.setSkippedNumber(defaultSkippedNumber);
+    LazyLoadingService.setTakenNumber(takenNumber);
     $scope.email = UserService.getEmail();
     $scope.isLoggedIn = UserService.isLoggedIn();
-    ArticleService.query().$promise
+    ArticleService.query({ skippedNumber: LazyLoadingService.getSkippedNumber(), takenNumber: LazyLoadingService.getTakenNumber() }).$promise
       .then(function (data) {
         $scope.articles = data;
       })
       .catch(function (fallback) {
-        $scope.articles = fallback.toUpperCase() + '!!';
+        $scope.labelError = commonLanguage.labelError;
       }
     );
+    
+    // lazy loading
+    angular.element($window).bind("scroll", function() {
+			var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+			var body = document.body, html = document.documentElement;
+			var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, 
+        html.scrollHeight, html.offsetHeight);
+			var windowBottom = windowHeight + window.pageYOffset;
+			if (windowBottom >= docHeight) {
+        $scope.labelLoading = homeLanguage.labelLoading;
+        $timeout(function () {
+          LazyLoadingService.setSkippedNumber(parseInt(LazyLoadingService.getSkippedNumber()) + parseInt(skippedNumber));
+          LazyLoadingService.setTakenNumber(parseInt(LazyLoadingService.getTakenNumber()));
+          ArticleService.query({ skippedNumber: LazyLoadingService.getSkippedNumber(), takenNumber: LazyLoadingService.getTakenNumber() }).$promise
+            .then(function (data) {
+              $scope.articles.push.apply($scope.articles, data);
+            })
+            .catch(function (fallback) {
+              $scope.labelError = commonLanguage.labelError;
+            }
+          );
+          $scope.labelLoading = '';
+        }, 1500);
+			}
+		});
+    
   }
-]);
+);
 
-bookControllers.controller('IndexController', [function () {
-}]);
-
-bookControllers.controller('LogoutController', ['UserService', 
+bookControllers.controller('LogoutController', 
   function (UserService) {
     UserService.logout();
   }
-]);
+);
 
-bookControllers.controller('AboutController', ['$scope', 'UserService', 
+bookControllers.controller('AboutController',  
   function ($scope, UserService) {
     $scope.email = UserService.getEmail();
     $scope.isLoggedIn = UserService.isLoggedIn();
   }
-]);
+);
 
-bookControllers.controller('LoginController', ['$scope', '$location', 'AuthenticationService', 
-  'urlAuthentication', 'commonLanguage', 'loginLanguage', function ($scope, $location, AuthenticationService, urlAuthentication,
+bookControllers.controller('LoginController', function ($scope, $location, AuthenticationService, urlAuthentication,
     commonLanguage, loginLanguage) {
       // set language
         $scope.labelSignin = loginLanguage.labelSignin;
@@ -104,7 +127,8 @@ bookControllers.controller('LoginController', ['$scope', '$location', 'Authentic
               $location.path('/home');
             }, function(rejectParam) {
               $location.path('/login');
+              $scope.labelInvalidAccount = commonLanguage.labelInvalidAccount;
             }
           );
         }
-}]);
+});
