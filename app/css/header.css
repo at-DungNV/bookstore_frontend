@@ -33,13 +33,13 @@
   font-family: "Roboto", Arial, sans-serif;
 }
 .fh5co-header h1 i {
-  color: #1FB57B;
+  color: #fff;
 }
 .fh5co-header h1 a {
-  color: black;
+  color: #fff;
 }
 .fh5co-header h1 a > span {
-  color: #1FB57B;
+  color: #fff;
 }
 .fh5co-header h1 a:hover, .fh5co-header h1 a:active, .fh5co-header h1 a:focus {
   text-decoration: none;
@@ -71,7 +71,7 @@
   display: inline;
 }
 .fh5co-header nav ul li a {
-  color: rgba(0, 0, 0, 0.5);
+  color: #e07513;
   font-size: 16px;
   padding: 12px 15px;
   position: relative;
@@ -87,7 +87,7 @@
 }
 .fh5co-header nav ul li a:hover {
   text-decoration: none;
-  color: black;
+  color: #4ea4d0;
 }
 .fh5co-header nav ul li a.active, .fh5co-header nav ul li a:focus {
   outline: none;
@@ -108,7 +108,7 @@
   padding-top: 7px !important;
   padding-bottom: 7px !important;
   border: 2px solid #1fb57b;
-  color: #1FB57B;
+  color: #FFF;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   -ms-border-radius: 30px;
@@ -123,7 +123,7 @@
 }
 .fh5co-header nav ul li.active a {
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.8);
+  color: #FFF;
 }
 .fh5co-header nav ul li.active a:after {
   visibility: visible;

@@ -49,3 +49,4 @@ bookApp.constant("urlENCommon", 'view/lang/en/common.json');
 bookApp.constant("defaultSkippedNumber", 0);
 bookApp.constant("skippedNumber", 5);
 bookApp.constant("takenNumber", 5);
+bookApp.constant("offsetHeight", 100);

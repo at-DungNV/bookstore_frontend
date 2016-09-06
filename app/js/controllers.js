@@ -34,7 +34,7 @@ bookControllers.controller('ViewController',
 );
 
 bookControllers.controller('HomeController', function (
-  $scope, ArticleService, commonLanguage, homeLanguage, UserService, $window, skippedNumber, takenNumber, LazyLoadingService, $timeout, defaultSkippedNumber
+  $scope, ArticleService, commonLanguage, homeLanguage, UserService, $window, skippedNumber, takenNumber, LazyLoadingService, $timeout, defaultSkippedNumber, offsetHeight
   ) {
     // set language
     $scope.labelBuy = commonLanguage.labelBuy;
@@ -62,7 +62,7 @@ bookControllers.controller('HomeController', function (
 			var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, 
         html.scrollHeight, html.offsetHeight);
 			var windowBottom = windowHeight + window.pageYOffset;
-			if (windowBottom >= docHeight) {
+			if (windowBottom >= docHeight - offsetHeight) {
         $scope.labelLoading = homeLanguage.labelLoading;
         $timeout(function () {
           LazyLoadingService.setSkippedNumber(parseInt(LazyLoadingService.getSkippedNumber()) + parseInt(skippedNumber));
