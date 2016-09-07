@@ -26,6 +26,7 @@
 @import url("login.css");
 @import url("footer.css");
 @import url("home.css");
+@import url("nav.css");
 
 .item {
   border-radius: 4px;
@@ -78,4 +79,18 @@
 
 .center {
   text-align: center;
+}
+
+.background-content {
+  background-color: #999;
+}
+
+.background-header, .background-footer {
+  background-color: #333;
+}
+.background-navigation {
+  background-color: #fff;
+}
+.header-color, .footer-color {
+  color : #fff;
 }
