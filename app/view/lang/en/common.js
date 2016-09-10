@@ -26,14 +26,6 @@ angular.module("languageService", [], ["$provide", function($provide) {
         labelLicense : "© 2015, DungNV, All rights reserved",
         labelError : "Sorry, There might be something wrong!",
         labelInvalidAccount : "Sorry, Your account is invalid",
-        categoryBook : "Book",
-        categoryBookIT : "Infomation Technology",
-        categoryBookCivilEngineering : "Civil Engineering",
-        categoryBookMechanicalEngineering : "Mechanical Engineering",
-        categoryBookBiotechnology : "Biotechnology Engineering",
-        categoryBookElectronicEngineering : "Electronic Engineering",
-        categoryBookOthers : "Others",
-        categoryOthers : "Others",
     });
     $provide.value("homeLanguage", {
         dollarCurrency : "$",
