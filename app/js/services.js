@@ -15,6 +15,13 @@ shareServices.factory('ArticleService', ['$resource', 'urlArticle', function ($r
     );
 }]);
 
+shareServices.factory('CategoryService', function ($resource, urlCategory) {
+    return $resource(urlCategory, {
+        category: "@category"
+      }
+    );
+});
+
 shareServices.service('AuthenticationService', function ($http, $q, UserService) {
   this.login = function (email, password, urlAuthentication) {
     var deferred = $q.defer();
