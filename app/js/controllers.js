@@ -3,7 +3,7 @@
 var bookControllers = angular.module('bookControllers', []);
 
 bookControllers.controller('ViewController', 
-  function ($scope, UserService, commonLanguage) {
+  function ($scope, UserService, commonLanguage, CategoryService) {
     // set language
     $scope.titlePage = commonLanguage.titlePage;
     $scope.labelHome = commonLanguage.labelHome;
@@ -30,6 +30,15 @@ bookControllers.controller('ViewController',
     // process logic
     $scope.isLoggedIn = UserService.isLoggedIn();
     $scope.email = UserService.getEmail();
+    CategoryService.query().$promise
+      .then(function (data) {
+        $scope.categories = data;
+      })
+      .catch(function (fallback) {
+        $scope.labelError = commonLanguage.labelError;
+      }
+    );
+    
   }
 );
 

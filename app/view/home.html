@@ -4,19 +4,7 @@
 	<div>
 		<div class="row">
 			<div class="col-md-3 navigation">
-				<ul class="nav nav-tabs">
-					<li class="active"><a data-toggle="tab" href data-target="#homeBuyBox">{{ labelBuy}}</a></li>
-					<li><a data-toggle="tab" href data-target="#homeSellBox">{{ labelSell }}</a></li>
-				</ul>
-
-				<div class="tab-content">
-					<div id="homeBuyBox" class="tab-pane fade in active background-navigation">
-						
-					</div>
-					<div id="homeSellBox" class="tab-pane fade background-navigation">
-						
-					</div>
-				</div>
+				<div ng-include="" src="'../view/partials/nav.html'"></div>
       </div>
       <div class="col-md-9">
         <div class="row thumbnail padding-10" id="homeContentBox">
