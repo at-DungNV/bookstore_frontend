@@ -26,6 +26,8 @@ angular.module("languageService", [], ["$provide", function($provide) {
         labelLicense : "© 2015, DungNV, All rights reserved",
         labelError : "Sorry, There might be something wrong!",
         labelInvalidAccount : "Sorry, Your account is invalid",
+        labelLeaveAComment : "Leave a Comment",
+        buttonSubmit : "Submit",
     });
     $provide.value("homeLanguage", {
         dollarCurrency : "$",
@@ -45,5 +47,11 @@ angular.module("languageService", [], ["$provide", function($provide) {
         labelAddress : "Address",
         labelGender : "Gender",
         titleSignup : "Sign up",
+    });
+    $provide.value("showArticleLanguage", {
+        labelCreatedBy : "Created by",
+        labelPostedOn : "Posted on",
+        previousButton : "Previous",
+        nextButton : "Next",
     });
 }]);

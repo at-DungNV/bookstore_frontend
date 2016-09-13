@@ -23,15 +23,20 @@ bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpP
           templateUrl: 'view/home.html',
           controller: 'HomeController'
       })
+      .state('article', {
+          url: '/article',
+          templateUrl: 'view/articles/index.html',
+          controller: 'ArticleController'
+      })
+      .state('article-show', {
+          url: '/article/:slug',
+          templateUrl: 'view/articles/show.html',
+          controller: 'ArticleShowController'
+      })
       .state('about', {
           url: '/about',
           templateUrl: 'view/about.html',
           controller: 'AboutController'
-      })
-      .state('index', {
-          url: '/index',
-          templateUrl: 'view/index.html',
-          controller: 'IndexController'
       })
       .state('logout', {
           url: '/logout',

@@ -1,6 +1,8 @@
 'use strict';
 
-var bookControllers = angular.module('bookControllers', []);
+var bookControllers = angular.module('bookControllers', [
+  'articleControllers',
+]);
 
 bookControllers.controller('ViewController', 
   function ($scope, UserService, commonLanguage, CategoryService) {

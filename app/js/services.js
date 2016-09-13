@@ -2,18 +2,24 @@
 
 var shareServices = angular.module('shareServices', []);
 
-shareServices.factory('ArticleService', ['$resource', 'urlArticle', function ($resource, urlArticle) {
+shareServices.factory('ArticleService', function ($resource, urlArticle, UserService) {
     return $resource(urlArticle, {
         article: "@article"
       }, {
         query : {
           method : 'GET',
-          params : { skippedNumber: '@skippedNumber', takenNumber: '@skippedNumber' },
-          isArray: true
+          params : { skippedNumber: '@skippedNumber', takenNumber: '@takenNumber' },
+          isArray: true,
+        },
+        get: {
+          method: 'GET',
+          params : { slug: '@slug' },
+          url: urlArticle + '/:slug',
+          headers: { 'Authorization': UserService.getToken() },
         }
       }
     );
-}]);
+});
 
 shareServices.factory('CategoryService', function ($resource, urlCategory) {
     return $resource(urlCategory, {
