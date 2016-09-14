@@ -1,0 +1,81 @@
+<div ng-include="" src="'view/partials/guestHeader.html'" ng-show="!isLoggedIn"></div>
+<div ng-include="" src="'view/partials/userHeader.html'" ng-show="isLoggedIn"></div>
+<div class="container">
+	<div>
+		<div class="row">
+			<div class="col-md-3">
+      </div>
+      <!-- Article Article Content Column -->
+      <div class="col-md-7">
+        <div class="row thumbnail padding-10" id="articleShowContentBox">
+          <!-- Article Article -->
+
+          <!-- Title -->
+          <h1>{{ article.title }}</h1>
+
+          <!-- Author -->
+          <p class="lead">
+            {{ labelCreatedBy }}: <a href="#"> {{ article.user.email }}</a>
+          </p>
+
+          <hr>
+          <!-- Date/Time -->
+          <p><span class="glyphicon glyphicon-time"></span> {{ labelPostedOn }}: {{ article.created_at }} </p>
+          <hr>
+
+          <!-- Preview Image -->
+					<div id="carouselShowArticle" class="carousel slide" data-ride="carousel">
+				    <!-- Indicators -->
+				    <ol class="carousel-indicators">
+				      <li data-target="#carouselShowArticle" data-slide-to="0" class="active"></li>
+				      <li data-target="#carouselShowArticle" data-slide-to="1"></li>
+				      <li data-target="#carouselShowArticle" data-slide-to="2"></li>
+				      <li data-target="#carouselShowArticle" data-slide-to="3"></li>
+				    </ol>
+
+				    <!-- Wrapper for slides -->
+				    <div class="carousel-inner" role="listbox">
+				      <div class="item active">
+				        <img src="">
+				      </div>
+				    </div>
+				    <!-- Left and right controls -->
+				    <a class="left carousel-control" href data-target="#carouselShowArticle" role="button" data-slide="prev">
+				      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				      <span class="sr-only"> {{ previousButton }}</span>
+				    </a>
+				    <a class="right carousel-control" href data-target="#carouselShowArticle" role="button" data-slide="next">
+				      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				      <span class="sr-only">{{ nextButton }}</span>
+				    </a>
+				  </div>
+          <hr>
+          <!-- Article Content -->
+          <p class="lead"> {{ article.description }}</p>
+          <hr>
+
+          <!-- Article Comments -->
+
+          <!-- Comments Form -->
+          <div class="well">
+              <h4>{{ labelLeaveAComment }}:</h4>
+              <form role="form">
+                  <div class="form-group">
+                      <textarea class="form-control" rows="3"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary"> {{ buttonSubmit }}</button>
+              </form>
+          </div>
+
+          <hr>
+
+          <!-- Articleed Comments -->
+
+					<h4 ng-show="labelError!=null" class="center"> <span class="label label-danger"> {{ labelError }} </span></h4>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+	</div>
+</div>
