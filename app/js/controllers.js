@@ -2,6 +2,7 @@
 
 var bookControllers = angular.module('bookControllers', [
   'articleControllers',
+  'categoryControllers',
 ]);
 
 bookControllers.controller('ViewController', 

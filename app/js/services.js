@@ -2,6 +2,7 @@
 
 var shareServices = angular.module('shareServices', []);
 
+// Article Service
 shareServices.factory('ArticleService', function ($resource, urlArticle, UserService) {
     return $resource(urlArticle, {
         article: "@article"
@@ -16,14 +17,29 @@ shareServices.factory('ArticleService', function ($resource, urlArticle, UserSer
           params : { slug: '@slug' },
           url: urlArticle + '/:slug',
           headers: { 'Authorization': UserService.getToken() },
-        }
+        },
+        save: {
+          method: 'POST',
+          params : { name: '@name' },
+          url: urlArticle,
+          headers: { 'Authorization': UserService.getToken() },
+        },
       }
     );
 });
 
+// Category Service
 shareServices.factory('CategoryService', function ($resource, urlCategory) {
     return $resource(urlCategory, {
         category: "@category"
+      }
+    );
+});
+
+// City Service
+shareServices.factory('CityService', function ($resource, urlCity) {
+    return $resource(urlCity, {
+        city: "@city"
       }
     );
 });
