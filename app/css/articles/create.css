@@ -36,3 +36,12 @@ label.radioLabelCreateArticle {
     -ms-user-select: none;
     user-select: none;
 }
+
+.articleCreateImageBox {
+  height: 300px;
+  overflow: scroll;
+}
+
+.articleCreateImageBox .caption {
+  height: 50px;
+}

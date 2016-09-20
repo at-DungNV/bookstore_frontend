@@ -1,4 +1,4 @@
-angular.module("languageService", [], ["$provide", function($provide) {    
+angular.module("languageService", [], function($provide) {    
     $provide.value("commonLanguage", {
         titlePage : "Share Things Share Life",
         titleWebPage : "Advertisement Web",
@@ -28,6 +28,7 @@ angular.module("languageService", [], ["$provide", function($provide) {
         labelInvalidAccount : "Sorry, Your account is invalid",
         labelLeaveAComment : "Leave a Comment",
         buttonSubmit : "Submit",
+        buttonCancel : "Cancel",
     });
     $provide.value("homeLanguage", {
         dollarCurrency : "$",
@@ -54,4 +55,26 @@ angular.module("languageService", [], ["$provide", function($provide) {
         previousButton : "Previous",
         nextButton : "Next",
     });
-}]);
+    $provide.value("createArticleLanguage", {
+        labelContactInfo : "Contact Information",
+        labelName : "Name",
+        labelEmail : "Email",
+        labelAddress : "Address",
+        labelPhone : "Phone",
+        labelContentArticle : "Content Article",
+        labelCategory : "Category",
+        labelCity : "City",
+        labelType : "Type",
+        labelTitle : "Title",
+        labelDescription : "Description",
+        labelPrice : "Price",
+        labelImages : "Images",
+        labelTotalFiles : "Total Files",
+        labelData : "MB",
+    });
+    $provide.value("alertLanguage", {
+        "required" : "can not be empty",
+        "minLength" : "is too short",
+        "maxLength" : "is too long",
+    });
+});
