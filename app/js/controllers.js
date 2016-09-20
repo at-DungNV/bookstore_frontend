@@ -2,10 +2,11 @@
 
 var bookControllers = angular.module('bookControllers', [
   'articleControllers',
+  'categoryControllers',
 ]);
 
 bookControllers.controller('ViewController', 
-  function ($scope, UserService, commonLanguage, CategoryService) {
+  function ($scope, UserService, commonLanguage, Category) {
     // set language
     $scope.titlePage = commonLanguage.titlePage;
     $scope.labelHome = commonLanguage.labelHome;
@@ -29,10 +30,11 @@ bookControllers.controller('ViewController',
     $scope.labelCarrer = commonLanguage.labelCarrer;
     $scope.labelLicense = commonLanguage.labelLicense;
     
+    
     // process logic
     $scope.isLoggedIn = UserService.isLoggedIn();
     $scope.email = UserService.getEmail();
-    CategoryService.query().$promise
+    Category.query().$promise
       .then(function (data) {
         $scope.categories = data;
       })
@@ -45,8 +47,9 @@ bookControllers.controller('ViewController',
 );
 
 bookControllers.controller('HomeController', function (
-  $scope, ArticleService, commonLanguage, homeLanguage, UserService, $window, skippedNumber, takenNumber, LazyLoadingService, $timeout, defaultSkippedNumber, offsetHeight
+  $scope, Article, commonLanguage, homeLanguage, UserService, $window, skippedNumber, takenNumber, LazyLoadingService, $timeout, defaultSkippedNumber, offsetHeight
   ) {
+    
     // set language
     $scope.labelBuy = commonLanguage.labelBuy;
     $scope.labelSell = commonLanguage.labelSell;
@@ -57,9 +60,10 @@ bookControllers.controller('HomeController', function (
     LazyLoadingService.setTakenNumber(takenNumber);
     $scope.email = UserService.getEmail();
     $scope.isLoggedIn = UserService.isLoggedIn();
-    ArticleService.query({ skippedNumber: LazyLoadingService.getSkippedNumber(), takenNumber: LazyLoadingService.getTakenNumber() }).$promise
+    Article.query({ skippedNumber: LazyLoadingService.getSkippedNumber(), takenNumber: LazyLoadingService.getTakenNumber() }).$promise
       .then(function (data) {
         $scope.articles = data;
+        console.log(data);
       })
       .catch(function (fallback) {
         $scope.labelError = commonLanguage.labelError;
@@ -78,7 +82,7 @@ bookControllers.controller('HomeController', function (
         $timeout(function () {
           LazyLoadingService.setSkippedNumber(parseInt(LazyLoadingService.getSkippedNumber()) + parseInt(skippedNumber));
           LazyLoadingService.setTakenNumber(parseInt(LazyLoadingService.getTakenNumber()));
-          ArticleService.query({ skippedNumber: LazyLoadingService.getSkippedNumber(), takenNumber: LazyLoadingService.getTakenNumber() }).$promise
+          Article.query({ skippedNumber: LazyLoadingService.getSkippedNumber(), takenNumber: LazyLoadingService.getTakenNumber() }).$promise
             .then(function (data) {
               $scope.articles.push.apply($scope.articles, data);
             })
