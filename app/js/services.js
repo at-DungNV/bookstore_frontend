@@ -19,14 +19,10 @@ shareServices.factory('City', function($http, constant) {
 
 shareServices.factory('Article', function($http, constant, UserService) {
     var article = {};
-    article.query = function(skippedNumber, takenNumber) {
+    article.query = function() {
       return $http({
           method: "GET",
           url: constant.urlArticle,
-          params: {
-            skippedNumber: skippedNumber,
-            takenNumber: takenNumber
-          },
           headers: {
             'Content-Type': 'application/json',
             'Authorization': UserService.getToken()
@@ -130,63 +126,37 @@ shareServices.service('AuthenticationService', function($http, $q, UserService) 
 
 shareServices.factory("UserService", function($window, $location) {
     var userService = {};
-    userService.setEmail = function(email) {
-            $window.localStorage && $window.localStorage.setItem('email', email);
-            return this;
-        },
-        userService.getEmail = function() {
-            return $window.localStorage && $window.localStorage.getItem('email');
-        },
-        userService.setToken = function(token) {
-            $window.localStorage && $window.localStorage.setItem('token', token);
-            return this;
-        },
-        userService.getToken = function() {
-            return $window.localStorage && $window.localStorage.getItem('token');
-        },
-        userService.setCredentials = function(id, name, email, phone, address) {
-            $window.localStorage && $window.localStorage.setItem('id', id);
-            $window.localStorage && $window.localStorage.setItem('name', name);
-            $window.localStorage && $window.localStorage.setItem('email', email);
-            $window.localStorage && $window.localStorage.setItem('phone', phone);
-            $window.localStorage && $window.localStorage.setItem('address', address);
-        },
-        userService.getCredentials = function() {
-            var credentials = {};
-            credentials.id = $window.localStorage && $window.localStorage.getItem('id');
-            credentials.name = $window.localStorage && $window.localStorage.getItem('name');
-            credentials.email = $window.localStorage && $window.localStorage.getItem('email');
-            credentials.phone = $window.localStorage && $window.localStorage.getItem('phone');
-            credentials.address = $window.localStorage && $window.localStorage.getItem('address');
-            return credentials;
-        },
-        userService.logout = function() {
-            $window.localStorage.clear();
-            $location.path('/login');
-        },
-        userService.isLoggedIn = function() {
-            return $window.localStorage.email ? true : false;
-        }
+    userService.setToken = function(token) {
+        $window.localStorage && $window.localStorage.setItem('token', token);
+        return this;
+    },
+    userService.getToken = function() {
+        return $window.localStorage && $window.localStorage.getItem('token');
+    },
+    userService.setCredentials = function(id, name, email, phone, address) {
+        $window.localStorage && $window.localStorage.setItem('id', id);
+        $window.localStorage && $window.localStorage.setItem('name', name);
+        $window.localStorage && $window.localStorage.setItem('email', email);
+        $window.localStorage && $window.localStorage.setItem('phone', phone);
+        $window.localStorage && $window.localStorage.setItem('address', address);
+    },
+    userService.getCredentials = function() {
+        var credentials = {};
+        credentials.id = $window.localStorage && $window.localStorage.getItem('id');
+        credentials.name = $window.localStorage && $window.localStorage.getItem('name');
+        credentials.email = $window.localStorage && $window.localStorage.getItem('email');
+        credentials.phone = $window.localStorage && $window.localStorage.getItem('phone');
+        credentials.address = $window.localStorage && $window.localStorage.getItem('address');
+        return credentials;
+    },
+    userService.logout = function() {
+        $window.localStorage.clear();
+        $location.path('/login');
+    },
+    userService.isLoggedIn = function() {
+        return $window.localStorage.email ? true : false;
+    }
     return userService;
-});
-
-shareServices.factory("LazyLoadingService", function($window) {
-    return {
-        setSkippedNumber: function(skippedNumber) {
-            $window.localStorage && $window.localStorage.setItem('skippedNumber', skippedNumber);
-            return this;
-        },
-        getSkippedNumber: function() {
-            return $window.localStorage && $window.localStorage.getItem('skippedNumber');
-        },
-        setTakenNumber: function(takenNumber) {
-            $window.localStorage && $window.localStorage.setItem('takenNumber', takenNumber);
-            return this;
-        },
-        getTakenNumber: function() {
-            return $window.localStorage && $window.localStorage.getItem('takenNumber');
-        }
-    };
 });
 
 shareServices.factory('ResponseStatusHandleService', function($location, constant) {

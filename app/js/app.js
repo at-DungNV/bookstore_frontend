@@ -4,13 +4,15 @@ var bookApp = angular.module('bookApp', [
   'bookControllers',
   'shareServices',
   'bookDirectives',
+  'languageService',
   'satellizer',
   'ui.router',
   'ngStorage',
-  'ngResource',
-  'languageService',
   'yaru22.angular-timeago',
   'angularFileUpload',
+  'ui.bootstrap',
+  'ngAnimate',
+  'ngSanitize',
 ]);
 bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpProvider', 
   function ($stateProvider, $urlRouterProvider, $authProvider, $httpProvider) {
@@ -64,6 +66,9 @@ bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpP
   }
 ]);
 var urlBase = 'http://bookstore.me';
+bookApp.run(function ($rootScope) {
+  $rootScope.endPoint = urlBase;
+});
 bookApp.constant("constant", {
   'success200' : 200,
   'error422' : 422,
@@ -77,7 +82,7 @@ bookApp.constant("constant", {
   'urlAuthentication': urlBase+ '/api/authenticate',
   'urlENCommon': 'view/lang/en/common.json',
   'storagePath': 100,
-  'defaultSkippedNumber': 0,
-  'takenNumber': 5,
-  'offsetHeight': 100,
+  'defaultCurrentPage': 1,
+  'maxSizePagination': 5,
+  'maxSelectedPagination': 5,
 });

@@ -109,3 +109,11 @@
 .label-title {
   font-size: 25px;
 }
+
+.font-size {
+  font-size: 16px;
+}
+
+.pagination-sm > li > a {
+  font-size: 14px;
+}

@@ -32,10 +32,6 @@ bookControllers.controller('ViewController',
       $scope.labelCarrer = commonLanguage.common.labelCarrer;
       $scope.labelLicense = commonLanguage.common.labelLicense;
       
-      
-      // process logic
-      $rootScope.isLoggedIn = UserService.isLoggedIn();
-      $rootScope.email = UserService.getEmail();
       Category.query().then(function (response){
         $scope.categories = response.data;
       }, function (response) {
@@ -50,47 +46,28 @@ bookControllers.controller('ViewController',
 );
 
 bookControllers.controller('HomeController', function (
-  $scope, Article, commonLanguage, UserService, $window, LazyLoadingService, $timeout, constant
-  ) {
+  $rootScope, $scope, Article, commonLanguage, UserService, constant) {
+    
     $scope.init = function () {
       // set language
       $scope.labelBuy = commonLanguage.common.labelBuy;
       $scope.labelSell = commonLanguage.common.labelSell;
       $scope.dollarCurrency = commonLanguage.homeLanguage.dollarCurrency;
-      
       // process logic
-      LazyLoadingService.setSkippedNumber(constant.defaultSkippedNumber);
-      LazyLoadingService.setTakenNumber(constant.takenNumber);
+      $rootScope.isLoggedIn = UserService.isLoggedIn();
+      $rootScope.email = UserService.getCredentials().email;
       
-      Article.query(LazyLoadingService.getSkippedNumber(), LazyLoadingService.getTakenNumber()).then(function (response){
+      Article.query().then(function (response){
         $scope.articles = response.data;
+        $scope.viewby = constant.maxSelectedPagination;
+        $scope.totalItems = $scope.articles.length;
+        $scope.currentPage = constant.defaultCurrentPage;
+        $scope.itemsPerPage = $scope.viewby;
+        $scope.maxSize = constant.maxSizePagination;
       }, function (response) {
         $scope.labelError = commonLanguage.common.labelError;
       });
-    }
-    
-    // lazy loading
-    angular.element($window).bind("scroll", function() {
-			var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-			var body = document.body, html = document.documentElement;
-			var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, 
-        html.scrollHeight, html.offsetHeight);
-			var windowBottom = windowHeight + window.pageYOffset;
-			if (windowBottom >= docHeight - constant.offsetHeight) {
-        $scope.labelLoading = commonLanguage.homeLanguage.labelLoading;
-        $timeout(function () {
-          LazyLoadingService.setSkippedNumber(parseInt(LazyLoadingService.getSkippedNumber()) + parseInt(constant.skippedNumber));
-          LazyLoadingService.setTakenNumber(parseInt(LazyLoadingService.getTakenNumber()));
-          Article.query(LazyLoadingService.getSkippedNumber(), LazyLoadingService.getTakenNumber()).then(function (response){
-            $scope.articles.push.apply($scope.articles, response.data);
-            $scope.labelLoading = '';
-          }, function (response) {
-            $scope.labelError = commonLanguage.common.labelError;
-          });
-        }, 1500);
-			}
-		});
-    
+    };
     $scope.init();
   }
 );
