@@ -124,7 +124,7 @@ shareServices.service('AuthenticationService', function($http, $q, UserService) 
 });
 
 
-shareServices.factory("UserService", function($window, $location) {
+shareServices.factory("UserService", function($window, $location, $rootScope) {
     var userService = {};
     userService.setToken = function(token) {
         $window.localStorage && $window.localStorage.setItem('token', token);

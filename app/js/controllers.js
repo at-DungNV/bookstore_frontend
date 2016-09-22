@@ -32,14 +32,15 @@ bookControllers.controller('ViewController',
       $scope.labelCarrer = commonLanguage.common.labelCarrer;
       $scope.labelLicense = commonLanguage.common.labelLicense;
       
+      $rootScope.isLoggedIn = UserService.isLoggedIn();
+      $rootScope.email = UserService.getCredentials().email;
+      
       Category.query().then(function (response){
         $scope.categories = response.data;
       }, function (response) {
         $scope.labelError = commonLanguage.common.labelError;
       });
     };
-    
-    
     
     $scope.init();
   }
@@ -53,9 +54,9 @@ bookControllers.controller('HomeController', function (
       $scope.labelBuy = commonLanguage.common.labelBuy;
       $scope.labelSell = commonLanguage.common.labelSell;
       $scope.dollarCurrency = commonLanguage.homeLanguage.dollarCurrency;
-      // process logic
       $rootScope.isLoggedIn = UserService.isLoggedIn();
       $rootScope.email = UserService.getCredentials().email;
+      // process logic
       
       Article.query().then(function (response){
         $scope.articles = response.data;
