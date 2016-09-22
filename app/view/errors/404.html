@@ -1,0 +1,29 @@
+<div ng-include="" src="'view/partials/guestHeader.html'" ng-show="!isLoggedIn"></div>
+<div ng-include="" src="'view/partials/userHeader.html'" ng-show="isLoggedIn"></div>
+<!-- Content Wrapper -->
+<div class="wrapper">
+    <div class="container">
+        <div class="col-xs-12 col-sm-7 col-lg-7">
+            <!-- Info -->
+            <div class="info">
+                <h1>{{ label404 }}</h1>
+                <h2>{{ labelPageNotFound }}</h2>
+                <p> {{ content404 }}</p>
+                <a ui-sref="home" class="btnError404">{{ buttonGoHome }}</a>
+                <a ui-sref="logout" class="btnError404 btn-brown">{{ buttonContactUs }}</a>
+            </div>
+            <!-- end Info -->
+        </div>
+
+        <div class="col-xs-12 col-sm-5 col-lg-5 text-center">
+            <!-- Monkey -->
+            <div class="monkey">
+                <img src="../../images/monkey.gif" alt="Monkey" />
+            </div>
+            <!-- end Monkey -->
+        </div>
+
+    </div>
+    <!-- end container -->
+</div>
+<!-- end Content Wrapper -->
