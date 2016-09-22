@@ -118,9 +118,9 @@ bookControllers.controller('LoginController', function ($scope, $location, Authe
     $scope.login = function () {
       AuthenticationService.login($scope.email, $scope.password, constant.urlAuthentication).then(
         function(successParam) { 
-          $location.path('/home');
+          $state.go('home');
         }, function(rejectParam) {
-          $location.path('/login');
+          $state.go('login');
           $scope.labelInvalidAccount = commonLanguage.common.labelInvalidAccount;
         }
       );

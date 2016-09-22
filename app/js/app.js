@@ -66,8 +66,19 @@ bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpP
   }
 ]);
 var urlBase = 'http://bookstore.me';
-bookApp.run(function ($rootScope) {
+bookApp.run(function ($rootScope ,$location, UserService, $state) {
   $rootScope.endPoint = urlBase;
+  $rootScope.$on("$stateChangeStart", function(event, next, current) {
+      if (!UserService.isLoggedIn() ) {
+        if (next.name == "login" || next.name == "home" || next.name == "article-show") {
+          return ;
+        } else {
+          event.preventDefault();
+          $state.go("login");
+        }
+      }
+  });
+  $rootScope.url = $state;
 });
 bookApp.constant("constant", {
   'success200' : 200,
