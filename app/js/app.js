@@ -50,21 +50,34 @@ bookApp.config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$httpP
           templateUrl: 'view/logout.html',
           controller: 'LogoutController'
       })
-      ;
+      .state('404', {
+          url: '/error/404',
+          templateUrl: 'view/errors/404.html',
+          controller: 'PageNotFoundController'
+      })
+      .state('500', {
+          url: '/error/500',
+          templateUrl: 'view/errors/500.html',
+          controller: 'ServerErrorController'
+      });
     $urlRouterProvider.otherwise('/login');
   }
 ]);
 var urlBase = 'http://bookstore.me';
-bookApp.constant("urlUploads", 'http://bookstore.me/uploads');
-bookApp.constant("urlCategoryDetail", urlBase+ '/api/categoryDetail/:categoryDetail');
-bookApp.constant("urlCity", urlBase+ '/api/city/:city');
-bookApp.constant("urlArticleCreate", urlBase+ '/api/article');
-bookApp.constant("urlArticle", urlBase+ '/api/article/:article');
-bookApp.constant("urlCategory", urlBase+ '/api/category/:category');
-bookApp.constant("urlAuthentication", urlBase+ '/api/authenticate');
-bookApp.constant("urlENCommon", 'view/lang/en/common.json');
-bookApp.constant("storagePath", 100);
-bookApp.constant("defaultSkippedNumber", 0);
-bookApp.constant("skippedNumber", 5);
-bookApp.constant("takenNumber", 5);
-bookApp.constant("offsetHeight", 100);
+bookApp.constant("constant", {
+  'success200' : 200,
+  'error422' : 422,
+  'error400' : 400,
+  'error500' : 500,
+  'urlUploads': 'http://bookstore.me/uploads',
+  'urlCategoryDetail': urlBase+ '/api/categoryDetail',
+  'urlCity': urlBase+ '/api/city',
+  'urlArticle': urlBase+ '/api/article',
+  'urlCategory': urlBase+ '/api/category',
+  'urlAuthentication': urlBase+ '/api/authenticate',
+  'urlENCommon': 'view/lang/en/common.json',
+  'storagePath': 100,
+  'defaultSkippedNumber': 0,
+  'takenNumber': 5,
+  'offsetHeight': 100,
+});

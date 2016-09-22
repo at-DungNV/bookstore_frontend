@@ -2,7 +2,11 @@
 <div ng-include="" src="'view/partials/userHeader.html'" ng-show="isLoggedIn"></div>
 <div class="container">
   <div class="row thumbnail padding-10" id="articleShowContentBox">
-    <form name="createArticleForm" class="form-horizontal form-label-left" novalidate>
+    <div class="alert alert-success" ng-show="success">
+      <a href data-target="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      {{ labelCreateArticle }}
+    </div>
+    <form name="createArticleForm" class="form-horizontal form-label-left" novalidate multipart/form-data>
       <div class="form-group margin-bottom-5">
         <label class="col-md-3 col-sm-3 col-xs-12">{{ labelContactInfo }}</label>
       </div>
@@ -44,7 +48,7 @@
           <span ng-show="createArticleForm.category_detail_id.$dirty && createArticleForm.category_detail_id.$error.required" class="help-block">{{labelCategory}} {{required}}</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{ 'has-error' : createArticleForm.city_id.$invalid && !createArticleForm.city_id.$pristine }">
         <label class="control-label col-md-3 col-sm-3 col-xs-12">{{labelCity}} <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12">
           <select class="form-control" name="city_id" ng-model="data.city_id" ng-options="city.name for city in cities track by city.id" ng-required="true">
@@ -78,7 +82,7 @@
           </label>
           <div class="col-md-6 col-sm-6 col-xs-12">
             <textarea ng-model="data.description" name="description" class="form-control" rows="3" ng-minlength="3" ng-maxlength="2000" ng-required="true"></textarea>
-            <span class="help-block" ng-show="createArticleForm.title.$dirty  && createArticleForm.description.$error.required">{{labelDescription}} {{required}}</span>
+            <span class="help-block" ng-show="createArticleForm.description.$dirty  && createArticleForm.description.$error.required">{{labelDescription}} {{required}}</span>
             <span class="help-block" ng-show="createArticleForm.description.$error.minlength">
               {{labelDescription}} {{minLength}}
             </span>

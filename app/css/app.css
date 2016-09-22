@@ -30,6 +30,10 @@
 
 @import url("articles/create.css");
 
+/* 404 */
+@import url("errors/style.css");
+@import url("errors/responsive.css");
+
 .item {
   border-radius: 4px;
 }
