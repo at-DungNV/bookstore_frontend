@@ -3,72 +3,71 @@
 var bookControllers = angular.module('bookControllers', [
   'articleControllers',
   'categoryControllers',
+  'errorControllers',
 ]);
 
 bookControllers.controller('ViewController', 
-  function ($scope, UserService, commonLanguage, Category) {
-    // set language
-    $scope.titlePage = commonLanguage.titlePage;
-    $scope.labelHome = commonLanguage.labelHome;
-    $scope.labelLoginRegister = commonLanguage.labelLoginRegister;
-    $scope.labelPostArticleFree = commonLanguage.labelPostArticleFree;
-    $scope.labelPostedArticles = commonLanguage.labelPostedArticles;
-    $scope.labelProfile = commonLanguage.labelProfile;
-    $scope.labelHistoryTransaction = commonLanguage.labelHistoryTransaction;
-    $scope.titleWebPage = commonLanguage.titleWebPage;
-    $scope.labelLogout = commonLanguage.labelLogout;
-    $scope.labelEmail = commonLanguage.labelEmail;
-    $scope.labelPhone = commonLanguage.labelPhone;
-    $scope.labelContact = commonLanguage.labelContact.toUpperCase();
-    $scope.labelAbout = commonLanguage.labelAbout;
-    $scope.contentAbout = commonLanguage.contentAbout;
-    $scope.labelCustomerServices = commonLanguage.labelCustomerServices;
-    $scope.contentCustomerServices = commonLanguage.contentCustomerServices;
-    $scope.labelHumanResource = commonLanguage.labelHumanResource;
-    $scope.contentHumanResource = commonLanguage.contentHumanResource;
-    $scope.labelAuthor = commonLanguage.labelAuthor;
-    $scope.labelCarrer = commonLanguage.labelCarrer;
-    $scope.labelLicense = commonLanguage.labelLicense;
+  function ($rootScope, $scope, UserService, commonLanguage, Category) {
+    $scope.init = function () {
+      // set language
+      $scope.titlePage = commonLanguage.common.titlePage;
+      $scope.labelHome = commonLanguage.common.labelHome;
+      $scope.labelLoginRegister = commonLanguage.common.labelLoginRegister;
+      $scope.labelPostArticleFree = commonLanguage.common.labelPostArticleFree;
+      $scope.labelPostedArticles = commonLanguage.common.labelPostedArticles;
+      $scope.labelProfile = commonLanguage.common.labelProfile;
+      $scope.labelHistoryTransaction = commonLanguage.common.labelHistoryTransaction;
+      $scope.titleWebPage = commonLanguage.common.titleWebPage;
+      $scope.labelLogout = commonLanguage.common.labelLogout;
+      $scope.labelEmail = commonLanguage.common.labelEmail;
+      $scope.labelPhone = commonLanguage.common.labelPhone;
+      $scope.labelContact = commonLanguage.common.labelContact.toUpperCase();
+      $scope.labelAbout = commonLanguage.common.labelAbout;
+      $scope.contentAbout = commonLanguage.common.contentAbout;
+      $scope.labelCustomerServices = commonLanguage.common.labelCustomerServices;
+      $scope.contentCustomerServices = commonLanguage.common.contentCustomerServices;
+      $scope.labelHumanResource = commonLanguage.common.labelHumanResource;
+      $scope.contentHumanResource = commonLanguage.common.contentHumanResource;
+      $scope.labelAuthor = commonLanguage.common.labelAuthor;
+      $scope.labelCarrer = commonLanguage.common.labelCarrer;
+      $scope.labelLicense = commonLanguage.common.labelLicense;
+      
+      
+      // process logic
+      $rootScope.isLoggedIn = UserService.isLoggedIn();
+      $rootScope.email = UserService.getEmail();
+      Category.query().then(function (response){
+        $scope.categories = response.data;
+      }, function (response) {
+        $scope.labelError = commonLanguage.common.labelError;
+      });
+    };
     
     
-    // process logic
-    $scope.isLoggedIn = UserService.isLoggedIn();
-    $scope.email = UserService.getEmail();
-    Category.query().$promise
-      .then(function (data) {
-        $scope.categories = data;
-      })
-      .catch(function (fallback) {
-        $scope.labelError = commonLanguage.labelError;
-      }
-    );
     
+    $scope.init();
   }
 );
 
 bookControllers.controller('HomeController', function (
-  $scope, Article, commonLanguage, homeLanguage, UserService, $window, skippedNumber, takenNumber, LazyLoadingService, $timeout, defaultSkippedNumber, offsetHeight
+  $scope, Article, commonLanguage, UserService, $window, LazyLoadingService, $timeout, constant
   ) {
-    
-    // set language
-    $scope.labelBuy = commonLanguage.labelBuy;
-    $scope.labelSell = commonLanguage.labelSell;
-    $scope.dollarCurrency = homeLanguage.dollarCurrency;
-    
-    // process logic
-    LazyLoadingService.setSkippedNumber(defaultSkippedNumber);
-    LazyLoadingService.setTakenNumber(takenNumber);
-    $scope.email = UserService.getEmail();
-    $scope.isLoggedIn = UserService.isLoggedIn();
-    Article.query({ skippedNumber: LazyLoadingService.getSkippedNumber(), takenNumber: LazyLoadingService.getTakenNumber() }).$promise
-      .then(function (data) {
-        $scope.articles = data;
-        console.log(data);
-      })
-      .catch(function (fallback) {
-        $scope.labelError = commonLanguage.labelError;
-      }
-    );
+    $scope.init = function () {
+      // set language
+      $scope.labelBuy = commonLanguage.common.labelBuy;
+      $scope.labelSell = commonLanguage.common.labelSell;
+      $scope.dollarCurrency = commonLanguage.homeLanguage.dollarCurrency;
+      
+      // process logic
+      LazyLoadingService.setSkippedNumber(constant.defaultSkippedNumber);
+      LazyLoadingService.setTakenNumber(constant.takenNumber);
+      
+      Article.query(LazyLoadingService.getSkippedNumber(), LazyLoadingService.getTakenNumber()).then(function (response){
+        $scope.articles = response.data;
+      }, function (response) {
+        $scope.labelError = commonLanguage.common.labelError;
+      });
+    }
     
     // lazy loading
     angular.element($window).bind("scroll", function() {
@@ -77,24 +76,22 @@ bookControllers.controller('HomeController', function (
 			var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, 
         html.scrollHeight, html.offsetHeight);
 			var windowBottom = windowHeight + window.pageYOffset;
-			if (windowBottom >= docHeight - offsetHeight) {
-        $scope.labelLoading = homeLanguage.labelLoading;
+			if (windowBottom >= docHeight - constant.offsetHeight) {
+        $scope.labelLoading = commonLanguage.homeLanguage.labelLoading;
         $timeout(function () {
-          LazyLoadingService.setSkippedNumber(parseInt(LazyLoadingService.getSkippedNumber()) + parseInt(skippedNumber));
+          LazyLoadingService.setSkippedNumber(parseInt(LazyLoadingService.getSkippedNumber()) + parseInt(constant.skippedNumber));
           LazyLoadingService.setTakenNumber(parseInt(LazyLoadingService.getTakenNumber()));
-          Article.query({ skippedNumber: LazyLoadingService.getSkippedNumber(), takenNumber: LazyLoadingService.getTakenNumber() }).$promise
-            .then(function (data) {
-              $scope.articles.push.apply($scope.articles, data);
-            })
-            .catch(function (fallback) {
-              $scope.labelError = commonLanguage.labelError;
-            }
-          );
-          $scope.labelLoading = '';
+          Article.query(LazyLoadingService.getSkippedNumber(), LazyLoadingService.getTakenNumber()).then(function (response){
+            $scope.articles.push.apply($scope.articles, response.data);
+            $scope.labelLoading = '';
+          }, function (response) {
+            $scope.labelError = commonLanguage.common.labelError;
+          });
         }, 1500);
 			}
 		});
     
+    $scope.init();
   }
 );
 
@@ -106,44 +103,49 @@ bookControllers.controller('LogoutController',
 
 bookControllers.controller('AboutController',  
   function ($scope, UserService) {
-    $scope.email = UserService.getEmail();
-    $scope.isLoggedIn = UserService.isLoggedIn();
   }
 );
 
-bookControllers.controller('LoginController', function ($scope, $location, AuthenticationService, urlAuthentication,
-    commonLanguage, loginLanguage) {
+bookControllers.controller('LoginController', function ($scope, $location, AuthenticationService, constant,
+    commonLanguage) {
+    $scope.init = function () {
       // set language
-        $scope.labelSignin = loginLanguage.labelSignin;
-        $scope.labelForgotPassword = loginLanguage.labelForgotPassword;
-        $scope.labelRememberMe = loginLanguage.labelRememberMe;
-        $scope.labelLoginWithFacebook = loginLanguage.labelLoginWithFacebook;
-        $scope.labelLogin = commonLanguage.labelLogin;
-        $scope.labelCreateAccount = loginLanguage.labelCreateAccount;
-        $scope.labelSignup = loginLanguage.labelSignup;
-        $scope.labelSignup = loginLanguage.labelSignup;
-        $scope.labelEmail = commonLanguage.labelEmail;
-        $scope.labelName = loginLanguage.labelName;
-        $scope.labelPassword = loginLanguage.labelPassword;
-        $scope.labelBirthday = loginLanguage.labelBirthday;
-        $scope.labelAddress = loginLanguage.labelAddress;
-        $scope.titleSignup = loginLanguage.titleSignup;
-        
-        // process logic
-        $scope.email = 'dungnv@gmail.com';
-        $scope.password = '12345678';
-        $scope.isShowedLogin = true;
-        $scope.setShowedLogin = function (value) {
-          $scope.isShowedLogin = value;
-        };
-        $scope.login = function () {
-          AuthenticationService.login($scope.email, $scope.password, urlAuthentication).then(
-            function(successParam) { 
-              $location.path('/home');
-            }, function(rejectParam) {
-              $location.path('/login');
-              $scope.labelInvalidAccount = commonLanguage.labelInvalidAccount;
-            }
-          );
+      $scope.labelSignin = commonLanguage.loginLanguage.labelSignin;
+      $scope.labelForgotPassword = commonLanguage.loginLanguage.labelForgotPassword;
+      $scope.labelRememberMe = commonLanguage.loginLanguage.labelRememberMe;
+      $scope.labelLoginWithFacebook = commonLanguage.loginLanguage.labelLoginWithFacebook;
+      $scope.labelLogin = commonLanguage.common.labelLogin;
+      $scope.labelCreateAccount = commonLanguage.loginLanguage.labelCreateAccount;
+      $scope.labelSignup = commonLanguage.loginLanguage.labelSignup;
+      $scope.labelSignup = commonLanguage.loginLanguage.labelSignup;
+      $scope.labelEmail = commonLanguage.common.labelEmail;
+      $scope.labelName = commonLanguage.loginLanguage.labelName;
+      $scope.labelPassword = commonLanguage.loginLanguage.labelPassword;
+      $scope.labelBirthday = commonLanguage.loginLanguage.labelBirthday;
+      $scope.labelAddress = commonLanguage.loginLanguage.labelAddress;
+      $scope.titleSignup = commonLanguage.loginLanguage.titleSignup;
+      
+      // process logic
+      $scope.email = 'dungnv@gmail.com';
+      $scope.password = '12345678';
+      $scope.isShowedLogin = true;
+    };
+    $scope.setShowedLogin = function (value) {
+      $scope.isShowedLogin = value;
+    };
+      
+    $scope.setShowedLogin = function (value) {
+      $scope.isShowedLogin = value;
+    };
+    $scope.login = function () {
+      AuthenticationService.login($scope.email, $scope.password, constant.urlAuthentication).then(
+        function(successParam) { 
+          $location.path('/home');
+        }, function(rejectParam) {
+          $location.path('/login');
+          $scope.labelInvalidAccount = commonLanguage.common.labelInvalidAccount;
         }
+      );
+    }
+    $scope.init();
 });

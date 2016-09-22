@@ -30,6 +30,10 @@
 
 @import url("articles/create.css");
 
+/* 404 */
+@import url("errors/style.css");
+@import url("errors/responsive.css");
+
 .item {
   border-radius: 4px;
 }
@@ -101,4 +105,7 @@
 .carousel-inner > .item > a > img {
     width: 100%;
     margin: auto;
+}
+.label-title {
+  font-size: 25px;
 }

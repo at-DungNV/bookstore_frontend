@@ -2,79 +2,84 @@
 var articleControllers = angular.module('articleControllers', []);
 
 articleControllers.controller('ArticleShowController', 
-  function ($scope, $stateParams, Article, commonLanguage, showArticleLanguage) {
-    // set language
-    $scope.labelLeaveAComment = commonLanguage.labelLeaveAComment;
-    $scope.buttonSubmit = commonLanguage.buttonSubmit;
-    $scope.labelCreatedBy = showArticleLanguage.labelCreatedBy;
-    $scope.labelPostedOn = showArticleLanguage.labelPostedOn;
-    $scope.previousButton = showArticleLanguage.previousButton;
-    $scope.nextButton = showArticleLanguage.nextButton;
-    
-    Article.get({ slug : $stateParams.slug }).$promise
-      .then(function (data) {
-        $scope.article = data;
-      })
-      .catch(function (fallback) {
-        $scope.labelError = commonLanguage.labelError;
-      }
-    );
+  function ($scope, $stateParams, Article, commonLanguage, $location, constant, ResponseStatusHandleService) {
+    $scope.init = function () {
+      // set language
+      $scope.labelLeaveAComment = commonLanguage.common.labelLeaveAComment;
+      $scope.buttonSubmit = commonLanguage.common.buttonSubmit;
+      $scope.labelCreatedBy = commonLanguage.showArticleLanguage.labelCreatedBy;
+      $scope.labelPostedOn = commonLanguage.showArticleLanguage.labelPostedOn;
+      $scope.previousButton = commonLanguage.showArticleLanguage.previousButton;
+      $scope.nextButton = commonLanguage.showArticleLanguage.nextButton;
+      
+      // process logic
+      $scope.urlUploads = constant.urlUploads;
+      
+      Article.get($stateParams.slug).then(function (response){
+        $scope.article = response.data;
+      }, function (response) {
+        ResponseStatusHandleService.process(response.status);
+      });
+    };
+    $scope.init();
   }
 );
 
 articleControllers.controller('ArticleCreateController', 
-  function ($scope, $stateParams, CategoryDetail, City,
-      fileUpload, Article, FileUploader, urlArticleCreate, 
-      UserService, createArticleLanguage, commonLanguage, alertLanguage) {
-    // set language
-    $scope.labelBuy = commonLanguage.labelBuy;
-    $scope.labelSell = commonLanguage.labelSell;
-    $scope.buttonSubmit = commonLanguage.buttonSubmit;
-    $scope.buttonCancel = commonLanguage.buttonCancel;
-    $scope.MB = 1024;
-    $scope.required = alertLanguage.required;
-    $scope.minLength = alertLanguage.minLength;
-    $scope.maxLength = alertLanguage.maxLength;
-    $scope.labelContactInfo = createArticleLanguage.labelContactInfo;
-    $scope.labelName = createArticleLanguage.labelName ;
-    $scope.labelEmail = createArticleLanguage.labelEmail;
-    $scope.labelAddress = createArticleLanguage.labelAddress;
-    $scope.labelPhone = createArticleLanguage.labelPhone;
-    $scope.labelContentArticle = createArticleLanguage.labelContentArticle;
-    $scope.labelCategory = createArticleLanguage.labelCategory;
-    $scope.labelCity = createArticleLanguage.labelCity;
-    $scope.labelType = createArticleLanguage.labelType;
-    $scope.labelTitle = createArticleLanguage.labelTitle;
-    $scope.labelDescription = createArticleLanguage.labelDescription;
-    $scope.labelPrice = createArticleLanguage.labelPrice;
-    $scope.labelImages = createArticleLanguage.labelImages;
-    $scope.labelTotalFiles = createArticleLanguage.labelTotalFiles;
-    $scope.labelData = createArticleLanguage.labelData;
+  function ($scope, $stateParams, CategoryDetail, City, Article, FileUploader, 
+      UserService, commonLanguage, ResponseStatusHandleService) {
+      $scope.init = function () {
+        // set language
+        $scope.labelBuy = commonLanguage.common.labelBuy;
+        $scope.labelSell = commonLanguage.common.labelSell;
+        $scope.buttonSubmit = commonLanguage.common.buttonSubmit;
+        $scope.buttonCancel = commonLanguage.common.buttonCancel;
+        $scope.MB = 1024;
+        $scope.required = commonLanguage.errorLanguage.required;
+        $scope.minLength = commonLanguage.errorLanguage.minLength;
+        $scope.maxLength = commonLanguage.errorLanguage.maxLength;
+        $scope.labelContactInfo = commonLanguage.createArticleLanguage.labelContactInfo;
+        $scope.labelName = commonLanguage.createArticleLanguage.labelName ;
+        $scope.labelEmail = commonLanguage.createArticleLanguage.labelEmail;
+        $scope.labelAddress = commonLanguage.createArticleLanguage.labelAddress;
+        $scope.labelPhone = commonLanguage.createArticleLanguage.labelPhone;
+        $scope.labelContentArticle = commonLanguage.createArticleLanguage.labelContentArticle;
+        $scope.labelCategory = commonLanguage.createArticleLanguage.labelCategory;
+        $scope.labelCity = commonLanguage.createArticleLanguage.labelCity;
+        $scope.labelType = commonLanguage.createArticleLanguage.labelType;
+        $scope.labelTitle = commonLanguage.createArticleLanguage.labelTitle;
+        $scope.labelDescription = commonLanguage.createArticleLanguage.labelDescription;
+        $scope.labelPrice = commonLanguage.createArticleLanguage.labelPrice;
+        $scope.labelImages = commonLanguage.createArticleLanguage.labelImages;
+        $scope.labelTotalFiles = commonLanguage.createArticleLanguage.labelTotalFiles;
+        $scope.labelData = commonLanguage.createArticleLanguage.labelData;
+        $scope.labelCreateArticle = commonLanguage.successLanguage.labelCreateArticle;
+        $scope.data = {
+          'type' : 'sell',
+        };
+        $scope.success = false;
+        City.query().then(function (response){
+          $scope.cities = response.data;
+          $scope.data.city_id = $scope.cities[0];
+        }, function (response) {
+          ResponseStatusHandleService.process(response.status);
+        });
+        
+        CategoryDetail.query().then(function (response){
+          $scope.categoryDetails = response.data;
+          $scope.data.category_detail_id = $scope.categoryDetails[0];
+        }, function (response) {
+          ResponseStatusHandleService.process(response.status);
+        });
+      };
     
     // process logic
     $scope.credentials = angular.toJson(UserService.getCredentials());
     $scope.name = UserService.getCredentials().name;
-    $scope.email = UserService.getCredentials().email;
     $scope.phone = UserService.getCredentials().phone;
     $scope.address = UserService.getCredentials().address;
-    CategoryDetail.query().$promise
-      .then(function (data) {
-        $scope.categoryDetails = data;
-        $scope.data.category_detail_id = data[0];
-      })
-      .catch(function (fallback) {
-        
-      }
-    );
-    City.query().$promise
-      .then(function (data) {
-        $scope.cities = data;
-        $scope.data.city_id = data[0];
-      })
-      .catch(function (fallback) {
-        
-      }
-    );
+    
+    
     var uploader = $scope.uploader = new FileUploader();
     
     $scope.submit = function (isValid) {
@@ -85,8 +90,13 @@ articleControllers.controller('ArticleCreateController',
         });
         $scope.data.category_detail_id = $scope.data.category_detail_id.id;
         $scope.data.city_id = $scope.data.city_id.id;
-        fileUpload.uploadFileToUrl(files, $scope.data, urlArticleCreate);
+        Article.store(files, $scope.data).then(function (response){
+          $scope.success = true;
+        }, function (response) {
+          $scope.success = false;
+        });
       }
     }
+    $scope.init();
   }
 );
